@@ -1,0 +1,30 @@
+[
+    {
+        "hora": "2025-10-23 17:03:51",
+        "sensor": "aquecedor",
+        "valor": "0",
+        "icone": "info",
+        "cor": "#007bff"
+    },
+    {
+        "hora": "2025-10-23 17:03:50",
+        "sensor": "aquecedor",
+        "valor": "1",
+        "icone": "info",
+        "cor": "#007bff"
+    },
+    {
+        "hora": "2025-10-23 17:03:49",
+        "sensor": "luz",
+        "valor": "0",
+        "icone": "info",
+        "cor": "#007bff"
+    },
+    {
+        "hora": "2025-10-23 17:03:49",
+        "sensor": "luz",
+        "valor": "1",
+        "icone": "info",
+        "cor": "#007bff"
+    }
+]
