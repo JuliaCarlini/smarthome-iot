@@ -62,8 +62,22 @@ if ($users_json) {
         <input type="password" name="password" placeholder="Insira a sua password" class="form-control" id="password" required>
       </div>
       <button type="submit" class="btn btn-success w-100">Entrar</button>
+  <hr class="text-muted">
+      
+      <button type="button" class="btn btn-outline-secondary btn-sm w-100" onclick="preencherGuest()">
+        Acesso Rápido (Demo Guest)
+      </button>
     </form>
+
   </div>
 </div>
+
+<script>
+function preencherGuest() {
+    document.getElementById('username').value = 'guest';
+    document.getElementById('password').value = 'convidado123';
+}
+</script>
+
 </body>
 </html>
