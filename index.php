@@ -15,6 +15,22 @@ if ($users_json) {
 } else {
         $error_msg = "<div class='alert alert-danger text-center mt-2'>Username ou password incorretos!</div>";
     }
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $username = trim(htmlspecialchars($_POST['username'] ?? '', ENT_QUOTES, 'UTF-8'));
+    $password = $_POST['password'] ?? '';
+
+    // Validar se o utilizador existe, se tem a chave password e se o hash coincide
+    if (isset($users[$username]) && isset($users[$username]['password']) && password_verify($password, $users[$username]['password'])) {
+        session_regenerate_id(true); // Prevenção contra ataques de Session Fixation
+        $_SESSION['username'] = $username;
+        $_SESSION['role']     = $users[$username]['role'] ?? 'guest'; // Guarda a função (admin ou guest)
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $error_msg = "<div class='alert alert-danger text-center mt-2'>Username ou password incorretos!</div>";
+    }
+}
 ?>
 <!doctype html>
 <html lang="pt">
