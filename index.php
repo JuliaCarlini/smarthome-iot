@@ -6,20 +6,15 @@ $users = require 'users.php';
 $error_msg = "";
 
 // Processar login se for POST
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = trim(htmlspecialchars($_POST['username'] ?? '', ENT_QUOTES, 'UTF-8'));
-    $password = $_POST['password'] ?? '';
-
-    // Verificar se usuário existe e senha está correta
-    if (isset($users[$username]) && password_verify($password, $users[$username])) {
+if (isset($users[$username]) && password_verify($password, $users[$username]['password'])) {
         session_regenerate_id(true);
         $_SESSION['username'] = $username;
+        $_SESSION['role']     = $users[$username]['role']; // Guarda a função (admin ou guest)
         header("Location: dashboard.php");
         exit;
     } else {
         $error_msg = "<div class='alert alert-danger text-center mt-2'>Username ou password incorretos!</div>";
     }
-}
 ?>
 <!doctype html>
 <html lang="pt">

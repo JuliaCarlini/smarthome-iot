@@ -54,15 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-// --- POST: Atualizar dados ---
+// --- POST: Atualizar dados (Apenas para administradores)---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+session_start();
+    if (!isset($_SESSION['username']) || ($_SESSION['role'] ?? 'guest') !== 'admin') {
+        header('HTTP/1.1 403 Forbidden');
+        echo json_encode(["erro" => "Acesso negado. Apenas administradores podem alterar o estado dos dispositivos."]);
+        exit;
+    }
+
     $nome = $_POST['nome'] ?? '';
     $valor = $_POST['valor'] ?? '';
     $hora = $_POST['hora'] ?? date("Y-m-d H:i:s");
-
+    
+    $dispositivos_validos = ['luz', 'aquecedor', 'portao', 'temperatura', 'presenca', 'luminosidade', 'humidade'];
+        if (!in_array($nome, $dispositivos_validos)) {
+            header('HTTP/1.1 400 Bad Request');
+            echo json_encode(["erro" => "Dispositivo inválido."]);
+            exit;
+        }
     if ($nome && $valor !== '') {
         $dir = $base_dir . "$nome/";
-        if (!is_dir($dir)) mkdir($dir, 0777, true);
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
 
         // Converte 1/0 em texto amigável
         if ($nome === 'portao') {

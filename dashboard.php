@@ -5,6 +5,8 @@ if (!isset($_SESSION['username'])) {
     die("Acesso restrito");
 }
 
+$user_role = $_SESSION['role'] ?? 'guest';
+
 // Função para ler valor e hora de um dispositivo com validação
 function lerValor($dispositivo) {
     // Sanitizar dispositivo
