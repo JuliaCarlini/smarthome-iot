@@ -75,7 +75,7 @@ if ($users_json) {
 <script>
 function preencherGuest() {
     document.getElementById('username').value = 'guest';
-    document.getElementById('password').value = 'convidado123';
+    document.getElementById('password').value = 'guest';
 }
 </script>
 
