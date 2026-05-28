@@ -1,30 +1,20 @@
 <?php
 session_start();
 
-// Carregar usuários do arquivo separado
-$users_json = getenv('APP_USERS');
+// 1. Tentar ler as credenciais a partir da Variável de Ambiente do Render
+$users_json = getenv('APP_USERS') ?: $_ENV['APP_USERS'] ?? $_SERVER['APP_USERS'] ?? null;
 $error_msg = "";
 
 if ($users_json) {
     $users = json_decode($users_json, true);
-}
-
-// Processar login se for POST
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = trim(htmlspecialchars($_POST['username'] ?? '', ENT_QUOTES, 'UTF-8'));
-    $password = $_POST['password'] ?? '';
-
-    // Validar se o utilizador existe e a password coincide (usando a nova estrutura com 'role')
-    if (isset($users[$username]) && password_verify($password, $users[$username]['password'])) {
-        session_regenerate_id(true);
-        $_SESSION['username'] = $username;
-        $_SESSION['role']     = $users[$username]['role']; // Guarda se é admin ou guest
-        header("Location: dashboard.php");
-        exit;
-    } else {
+    
+    // Alerta de diagnóstico caso o JSON inserido no Render tenha algum erro de sintaxe
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $error_msg = "<div class='alert alert-warning text-center mt-2'>Erro no formato do JSON: " . json_last_error_msg() . "</div>";
+    }
+} else {
         $error_msg = "<div class='alert alert-danger text-center mt-2'>Username ou password incorretos!</div>";
     }
-}
 ?>
 <!doctype html>
 <html lang="pt">
